@@ -291,7 +291,7 @@ export class Player {
   }
 
   /// ----------- 描绘一帧 -----------
-  private drawFrame (frame: number): void {
+  public drawFrame (frame: number): void {
     if (this.videoEntity === undefined) throw new Error('Player VideoEntity undefined')
     if (this.config.isUseIntersectionObserver && !this.isBeIntersection) return
 
