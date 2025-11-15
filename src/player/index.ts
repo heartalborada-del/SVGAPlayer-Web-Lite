@@ -347,4 +347,39 @@ export class Player {
       }
     }
   }
+
+  public getAllFrames(): Array<ArrayBuffer> {
+    if (this.videoEntity === undefined) throw new Error('Player VideoEntity undefined')
+    let frames: Array<ArrayBuffer> = []
+    for (let frame = 0; frame < this.totalFrames; frame++) {
+      let ofsCanvas = this.ofsCanvas
+
+      // OffscreenCanvas 在 Firefox 浏览器无法被清理历史内容
+      if (window.OffscreenCanvas !== undefined && window.navigator.userAgent.includes('Firefox')) {
+        ofsCanvas = new window.OffscreenCanvas(this.config.container.width, this.config.container.height)
+      }
+
+      ofsCanvas.width = this.config.container.width
+      ofsCanvas.height = this.config.container.height
+
+      if (this.config.isCacheFrames && this.cacheFrames[frame] !== undefined) {
+        const ofsFrame = this.cacheFrames[frame];
+        // ImageData
+        // context.putImageData(ofsFrame, 0, 0)
+        (ofsCanvas.getContext('2d') as OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D).drawImage(ofsFrame, 0, 0, ofsFrame.width, ofsFrame.height, 0, 0, ofsFrame.width, ofsFrame.height)
+      } else {
+        render(
+          ofsCanvas,
+          this.bitmapsCache,
+          this.videoEntity.dynamicElements,
+          this.videoEntity.replaceElements,
+          this.videoEntity,
+          this.currentFrame
+        )
+      }
+      let cache = (ofsCanvas.getContext('2d') as OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D).getImageData(0, 0, ofsCanvas.width, ofsCanvas.height)
+      frames.push(cache.data.buffer)
+    }
+    return frames
+  }
 }
