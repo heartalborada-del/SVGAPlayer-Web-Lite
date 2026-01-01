@@ -1,7 +1,6 @@
 {
-  "name": "svga",
-  "version": "2.1.1",
-  "private": true,
+  "name": "@heartalborada-del/svga",
+  "version": "2.1.2",
   "description": "Lightweight SVGA Web Player",
   "main": "dist/index.cjs.min.js",
   "module": "dist/index.esm.min.js",
@@ -13,12 +12,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/svga/SVGAPlayer-Web-Lite"
+    "url": "git+https://github.com/heartalborada-del/SVGAPlayer-Web-Lite"
   },
-  "bugs": {
-    "url": "https://github.com/svga/SVGAPlayer-Web-Lite/issues"
-  },
-  "homepage": "https://github.com/svga/SVGAPlayer-Web-Lite/#readme",
   "scripts": {
     "format:check": "eslint",
     "type:check": "tsc --noEmit",

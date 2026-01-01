@@ -53,9 +53,9 @@ export class Player {
   private isBeIntersection = true
   private intersectionObserver: IntersectionObserver | null = null
   private bitmapsCache: BitmapsCache = {}
-  private readonly cacheFrames: { [key: string]: HTMLImageElement | ImageBitmap} = {}
+  private readonly cacheFrames: { [key: string]: HTMLImageElement | ImageBitmap } = {}
 
-  constructor (options: HTMLCanvasElement | PlayerConfigOptions) {
+  constructor(options: HTMLCanvasElement | PlayerConfigOptions) {
     this.animator = new Animator()
     this.animator.onEnd = () => {
       if (this.onEnd !== undefined) this.onEnd()
@@ -75,7 +75,7 @@ export class Player {
    * 设置配置项
    * @param options 可配置项
    */
-  public setConfig (options: PlayerConfigOptions): void {
+  public setConfig(options: PlayerConfigOptions): void {
     if (options.startFrame !== undefined && options.endFrame !== undefined) {
       if (options.startFrame > options.endFrame) {
         throw new Error('StartFrame should > EndFrame')
@@ -96,7 +96,7 @@ export class Player {
     this.setIntersectionObserver()
   }
 
-  private setIntersectionObserver (): void {
+  private setIntersectionObserver(): void {
     if (hasIntersectionObserver && this.config.isUseIntersectionObserver) {
       this.intersectionObserver = new IntersectionObserver(entries => {
         this.isBeIntersection = !(entries[0].intersectionRatio <= 0)
@@ -117,7 +117,7 @@ export class Player {
    * @param videoEntity SVGA 数据源
    * @returns Promise<void>
    */
-  public async mount (videoEntity: Video): Promise<void> {
+  public async mount(videoEntity: Video): Promise<void> {
     return await new Promise((resolve, reject) => {
       this.currentFrame = 0
       this.totalFrames = videoEntity.frames - 1
@@ -182,7 +182,7 @@ export class Player {
    */
   public onEnd: EventCallback
 
-  private clearContainer (): void {
+  private clearContainer(): void {
     const width = this.config.container.width
     this.config.container.width = width
   }
@@ -190,7 +190,7 @@ export class Player {
   /**
    * 开始播放
    */
-  public start (): void {
+  public start(): void {
     if (this.videoEntity === undefined) throw new Error('videoEntity undefined')
     this.clearContainer()
     this.startAnimation()
@@ -200,7 +200,7 @@ export class Player {
   /**
    * 重新播放
    */
-  public resume (): void {
+  public resume(): void {
     this.startAnimation()
     if (this.onResume !== undefined) this.onResume()
   }
@@ -208,7 +208,7 @@ export class Player {
   /**
    * 暂停播放
    */
-  public pause (): void {
+  public pause(): void {
     this.animator.stop()
     if (this.onPause !== undefined) this.onPause()
   }
@@ -216,7 +216,7 @@ export class Player {
   /**
    * 停止播放
    */
-  public stop (): void {
+  public stop(): void {
     this.animator.stop()
     this.currentFrame = 0
     this.clearContainer()
@@ -226,21 +226,21 @@ export class Player {
   /**
    * 清理容器画布
    */
-  public clear (): void {
+  public clear(): void {
     this.clearContainer()
   }
 
   /**
    * 销毁实例
    */
-  public destroy (): void {
+  public destroy(): void {
     this.animator.stop()
     this.clearContainer()
-    ;(this.animator as any) = null
-    ;(this.videoEntity as any) = null
+      ; (this.animator as any) = null
+      ; (this.videoEntity as any) = null
   }
 
-  private startAnimation (): void {
+  private startAnimation(): void {
     if (this.videoEntity === undefined) throw new Error('videoEntity undefined')
 
     const { config, totalFrames, videoEntity } = this
@@ -283,7 +283,7 @@ export class Player {
     this.animator.start()
   }
 
-  private setSize (): void {
+  private setSize(): void {
     if (this.videoEntity === undefined) throw new Error('videoEntity undefined')
     const size = this.videoEntity.size
     this.config.container.width = size.width
@@ -291,7 +291,7 @@ export class Player {
   }
 
   /// ----------- 描绘一帧 -----------
-  public drawFrame (frame: number): void {
+  public drawFrame(frame: number): void {
     if (this.videoEntity === undefined) throw new Error('Player VideoEntity undefined')
     if (this.config.isUseIntersectionObserver && !this.isBeIntersection) return
 
@@ -374,7 +374,7 @@ export class Player {
           this.videoEntity.dynamicElements,
           this.videoEntity.replaceElements,
           this.videoEntity,
-          this.currentFrame
+          frame
         )
       }
       let cache = (ofsCanvas.getContext('2d') as OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D).getImageData(0, 0, ofsCanvas.width, ofsCanvas.height)
